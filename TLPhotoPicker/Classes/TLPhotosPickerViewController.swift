@@ -545,7 +545,7 @@ extension TLPhotosPickerViewController {
       guard let result = collection?.fetchResult else { return }
 
       result.enumerateObjects { (asset: PHAsset, index: Int, _) in
-        if self.maxCheck(), self.canSelect(phAsset: asset) {
+        if !self.maxCheck(), self.canSelect(phAsset: asset) {
           let asset = result.object(at: index)
           var tlAsset = TLPHAsset(asset: asset)
 
