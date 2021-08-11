@@ -147,6 +147,7 @@ open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var emptyMessageLabel: UILabel!
     @IBOutlet open var photosButton: UIBarButtonItem!
     @IBOutlet weak var selectAllButton: UIBarButtonItem!
+    @IBOutlet weak var unselectAllButton: UIBarButtonItem!
 
     public weak var delegate: TLPhotosPickerViewControllerDelegate?
     public weak var logDelegate: TLPhotosPickerLogDelegate?
@@ -533,6 +534,11 @@ extension TLPhotosPickerViewController {
       self.selectAllAssets()
     }
 
+    @IBAction open func unselectAllButtonTap() {
+      self.stopPlay()
+      self.unselectAllAssets()
+    }
+
     @IBAction open func limitButtonTap() {
         if #available(iOS 14.0, *) {
             PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: self)
@@ -544,18 +550,22 @@ extension TLPhotosPickerViewController {
       guard let result = collection?.fetchResult else { return }
 
       var selectedItems: [(IndexPath, Int)] = []
-      result.enumerateObjects { (asset: PHAsset, index: Int, _) in
-        if !self.maxCheck(), self.canSelect(phAsset: asset) {
-          let asset = result.object(at: index)
-          var tlAsset = TLPHAsset(asset: asset)
+      result.enumerateObjects { (asset: PHAsset, index: Int, stop: UnsafeMutablePointer<ObjCBool>) in
+        if !self.maxCheck() {
+          if self.canSelect(phAsset: asset) {
+            let asset = result.object(at: index)
+            var tlAsset = TLPHAsset(asset: asset)
 
-          tlAsset.selectedOrder = self.selectedAssets.count + 1
-          self.selectedAssets.append(tlAsset)
+            tlAsset.selectedOrder = self.selectedAssets.count + 1
+            self.selectedAssets.append(tlAsset)
 
-          self.logDelegate?.selectedPhoto(picker: self, at: index)
+            self.logDelegate?.selectedPhoto(picker: self, at: index)
 
-          let indexPath = IndexPath(row: index, section: 0)
-          selectedItems.append((indexPath, tlAsset.selectedOrder))
+            let indexPath = IndexPath(row: index, section: 0)
+            selectedItems.append((indexPath, tlAsset.selectedOrder))
+          }
+        } else {
+          stop.initialize(to: true)
         }
       }
 
@@ -569,6 +579,25 @@ extension TLPhotosPickerViewController {
       }
 
     }
+
+  private func unselectAllAssets() {
+    var unselectedItems: [IndexPath] = []
+    for (index, asset) in self.selectedAssets.enumerated() {
+      self.logDelegate?.deselectedPhoto(picker: self, at: index)
+      let indexPath = IndexPath(row: index, section: 0)
+      unselectedItems.append(indexPath)
+    }
+
+    self.selectedAssets.removeAll()
+
+    /// Update the UI with selected items.
+    unselectedItems.forEach { (item: IndexPath) in
+      if let cell = self.collectionView.cellForItem(at: item) as? TLPhotoCollectionViewCell {
+        cell.selectedAsset = false
+        self.collectionView.reloadItems(at: [item])
+      }
+    }
+  }
 
     private func dismiss(done: Bool) {
         var shouldDismiss = true
