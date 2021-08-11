@@ -531,7 +531,6 @@ extension TLPhotosPickerViewController {
     @IBAction open func selectAllButtonTap() {
       self.stopPlay()
       self.selectAllAssets()
-      self.dismiss(done: true)
     }
 
     @IBAction open func limitButtonTap() {
