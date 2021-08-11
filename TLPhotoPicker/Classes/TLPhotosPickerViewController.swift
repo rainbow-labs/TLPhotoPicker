@@ -543,6 +543,7 @@ extension TLPhotosPickerViewController {
       let collection = self.focusedCollection
       guard let result = collection?.fetchResult else { return }
 
+      var selectedItems: [(IndexPath, Int)] = []
       result.enumerateObjects { (asset: PHAsset, index: Int, _) in
         if !self.maxCheck(), self.canSelect(phAsset: asset) {
           let asset = result.object(at: index)
@@ -554,13 +555,19 @@ extension TLPhotosPickerViewController {
           self.logDelegate?.selectedPhoto(picker: self, at: index)
 
           let indexPath = IndexPath(row: index, section: 0)
-          if let cell = self.collectionView.cellForItem(at: indexPath) as? TLPhotoCollectionViewCell {
-            cell.selectedAsset = true
-            cell.orderLabel?.text = "\(tlAsset.selectedOrder)"
-            self.collectionView.reloadItems(at: [indexPath])
-          }
+          selectedItems.append((indexPath, tlAsset.selectedOrder))
         }
       }
+
+      /// Update the UI with selected items.
+      selectedItems.forEach { (item: (IndexPath, Int)) in
+        if let cell = self.collectionView.cellForItem(at: item.0) as? TLPhotoCollectionViewCell {
+          cell.selectedAsset = true
+          cell.orderLabel?.text = "\(item.1)"
+          self.collectionView.reloadItems(at: [item.0])
+        }
+      }
+
     }
 
     private func dismiss(done: Bool) {
