@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
-        <capability name="Image references" minToolsVersion="11.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,11 +25,13 @@
                 <outlet property="navigationBarTopConstraint" destination="IKp-hS-tTy" id="MFH-eP-0tb"/>
                 <outlet property="photosButton" destination="spQ-SO-lth" id="Vy3-rM-vY9"/>
                 <outlet property="popArrowImageView" destination="5zn-je-qLx" id="6k9-cH-vcU"/>
+                <outlet property="selectAllButton" destination="riT-Bf-gMc" id="jYH-Yk-7kJ"/>
                 <outlet property="subTitleArrowImageView" destination="b7w-7R-rco" id="IjY-7S-Zz1"/>
                 <outlet property="subTitleLabel" destination="DON-iU-Cox" id="ZyB-O9-EcR"/>
                 <outlet property="subTitleStackView" destination="kgt-Cn-AXg" id="Vcc-hP-iqe"/>
                 <outlet property="titleLabel" destination="xuG-bc-Oq9" id="2o0-aN-au6"/>
                 <outlet property="titleView" destination="VAz-Py-dsa" id="deY-US-9Jh"/>
+                <outlet property="unselectAllButton" destination="Z8E-9d-FF9" id="9OV-le-5hq"/>
                 <outlet property="view" destination="Zyk-dI-msE" id="dxK-gh-unF"/>
             </connections>
         </placeholder>
@@ -104,7 +107,7 @@
                     </items>
                 </navigationBar>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4gR-Bn-quP">
-                    <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                    <rect key="frame" x="0.0" y="44" width="375" height="579"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="VDa-Pp-VBq">
                         <size key="itemSize" width="50" height="50"/>
@@ -145,6 +148,26 @@
                         <constraint firstItem="gi6-Sw-3Zf" firstAttribute="centerY" secondItem="HPm-Vc-F86" secondAttribute="centerY" id="L0c-BG-65l"/>
                     </constraints>
                 </view>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sh9-tK-yWX">
+                    <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Gf2-tx-3mU"/>
+                    </constraints>
+                    <items>
+                        <barButtonItem title="Select All" id="riT-Bf-gMc">
+                            <connections>
+                                <action selector="selectAllButtonTap" destination="-1" id="P7v-gt-Mgw"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="l50-OV-eS3"/>
+                        <barButtonItem title="Unselect All" id="Z8E-9d-FF9">
+                            <color key="tintColor" systemColor="systemRedColor"/>
+                            <connections>
+                                <action selector="unselectAllButtonTap" destination="-1" id="rhQ-OK-Ajg"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="AEv-G6-dRI">
                     <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                 </activityIndicatorView>
@@ -207,8 +230,10 @@
                 <constraint firstItem="AEv-G6-dRI" firstAttribute="centerX" secondItem="Zyk-dI-msE" secondAttribute="centerX" id="44C-fd-MVc"/>
                 <constraint firstItem="X8O-Gg-slz" firstAttribute="leading" secondItem="Zyk-dI-msE" secondAttribute="leading" id="4Ud-fp-qD2"/>
                 <constraint firstItem="4gR-Bn-quP" firstAttribute="top" secondItem="X8O-Gg-slz" secondAttribute="bottom" id="CZx-xl-GLa"/>
+                <constraint firstItem="sh9-tK-yWX" firstAttribute="leading" secondItem="HLR-WT-D3I" secondAttribute="leading" id="Dqt-ms-cT0"/>
                 <constraint firstItem="X8O-Gg-slz" firstAttribute="top" secondItem="HLR-WT-D3I" secondAttribute="top" id="IKp-hS-tTy"/>
                 <constraint firstItem="Jcn-hC-Umh" firstAttribute="top" secondItem="X8O-Gg-slz" secondAttribute="bottom" id="KdD-nT-6tf"/>
+                <constraint firstItem="sh9-tK-yWX" firstAttribute="top" secondItem="4gR-Bn-quP" secondAttribute="bottom" id="Ljt-xl-FFE"/>
                 <constraint firstItem="HPm-Vc-F86" firstAttribute="leading" secondItem="HLR-WT-D3I" secondAttribute="leading" id="M3L-CU-HdQ"/>
                 <constraint firstAttribute="trailing" secondItem="4gR-Bn-quP" secondAttribute="trailing" id="M6b-2G-2m1"/>
                 <constraint firstAttribute="trailing" secondItem="Jcn-hC-Umh" secondAttribute="trailing" id="Njh-ZO-lnq"/>
@@ -218,15 +243,19 @@
                 <constraint firstItem="Jcn-hC-Umh" firstAttribute="leading" secondItem="Zyk-dI-msE" secondAttribute="leading" id="aY7-Ml-cd3"/>
                 <constraint firstItem="HPm-Vc-F86" firstAttribute="trailing" secondItem="HLR-WT-D3I" secondAttribute="trailing" id="aoA-8G-xDA"/>
                 <constraint firstItem="4gR-Bn-quP" firstAttribute="leading" secondItem="Zyk-dI-msE" secondAttribute="leading" id="kb7-vy-yTu"/>
-                <constraint firstItem="4gR-Bn-quP" firstAttribute="bottom" secondItem="HLR-WT-D3I" secondAttribute="bottom" id="qqE-w2-Tsc"/>
+                <constraint firstItem="sh9-tK-yWX" firstAttribute="trailing" secondItem="HLR-WT-D3I" secondAttribute="trailing" id="le2-5u-ELC"/>
+                <constraint firstItem="HLR-WT-D3I" firstAttribute="bottom" secondItem="sh9-tK-yWX" secondAttribute="bottom" id="mAn-ch-58H"/>
                 <constraint firstAttribute="trailing" secondItem="X8O-Gg-slz" secondAttribute="trailing" id="yWV-L2-0f4"/>
             </constraints>
-            <point key="canvasLocation" x="33.5" y="53.5"/>
+            <point key="canvasLocation" x="32.799999999999997" y="52.623688155922046"/>
         </view>
     </objects>
     <resources>
         <image name="arrow.png" width="18" height="18"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="pop_arrow.png" width="41" height="20"/>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>
