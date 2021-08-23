@@ -647,14 +647,14 @@ extension TLPhotosPickerViewController {
 
 // MARK: - TLPhotoLibraryDelegate
 extension TLPhotosPickerViewController: TLPhotoLibraryDelegate {
-    func loadCameraRollCollection(collection: TLAssetsCollection) {
+   public func loadCameraRollCollection(collection: TLAssetsCollection) {
         self.collections = [collection]
         self.focusFirstCollection()
         self.indicator.stopAnimating()
         self.reloadTableView()
     }
 
-    func loadCompleteAllCollection(collections: [TLAssetsCollection]) {
+  public func loadCompleteAllCollection(collections: [TLAssetsCollection]) {
         self.collections = collections
         self.focusFirstCollection()
         let isEmpty = self.collections.count == 0
