@@ -263,6 +263,27 @@ extension TLPhotoLibrary {
         getSmartAlbum(subType: .smartAlbumFavorites, result: &assetCollections)
         // CloudShared
         getSmartAlbum(subType: .albumCloudShared, result: &assetCollections)
+
+        // Other smart albums
+        getSmartAlbum(subType: .smartAlbumGeneric, result: &assetCollections)
+        getSmartAlbum(subType: .smartAlbumTimelapses, result: &assetCollections)
+        getSmartAlbum(subType: .smartAlbumAllHidden, result: &assetCollections)
+        getSmartAlbum(subType: .smartAlbumRecentlyAdded, result: &assetCollections)
+
+        getSmartAlbum(subType: .smartAlbumBursts, result: &assetCollections)
+        getSmartAlbum(subType: .smartAlbumSlomoVideos, result: &assetCollections)
+
+        if #available(iOS 10.2, *) {
+          getSmartAlbum(subType: .smartAlbumDepthEffect, result: &assetCollections)
+        }
+        if #available(iOS 10.3, *) {
+          getSmartAlbum(subType: .smartAlbumLivePhotos, result: &assetCollections)
+        }
+        if #available(iOS 11.0, *) {
+          getSmartAlbum(subType: .smartAlbumAnimated, result: &assetCollections)
+          getSmartAlbum(subType: .smartAlbumLongExposures, result: &assetCollections)
+        }
+
         // get all another albums
         getAlbum(subType: .any, result: &assetCollections)
         if configure.allowedVideo {
