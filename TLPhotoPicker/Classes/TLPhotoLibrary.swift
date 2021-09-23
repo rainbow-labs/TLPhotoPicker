@@ -49,10 +49,10 @@ public class TLPhotoLibrary {
   }
 
   @discardableResult
-  public func videoAsset(asset: PHAsset, size: CGSize = CGSize(width: 720, height: 1280), progressBlock: Photos.PHAssetImageProgressHandler? = nil, completionBlock:@escaping (AVPlayerItem?, [AnyHashable: Any]?) -> Void ) -> PHImageRequestID {
+  public func videoAsset(asset: PHAsset, deliveryFormat: PHVideoRequestOptionsDeliveryMode = .automatic, progressBlock: Photos.PHAssetImageProgressHandler? = nil, completionBlock:@escaping (AVPlayerItem?, [AnyHashable: Any]?) -> Void ) -> PHImageRequestID {
     let options = PHVideoRequestOptions()
     options.isNetworkAccessAllowed = true
-    options.deliveryMode = .automatic
+    options.deliveryMode = deliveryFormat
     options.progressHandler = progressBlock
     let requestID = self.imageManager.requestPlayerItem(forVideo: asset, options: options, resultHandler: { playerItem, info in
       completionBlock(playerItem, info)
