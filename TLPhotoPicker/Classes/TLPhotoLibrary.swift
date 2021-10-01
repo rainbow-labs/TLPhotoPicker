@@ -261,8 +261,9 @@ extension TLPhotoLibrary {
         getSmartAlbum(subType: .smartAlbumPanoramas, result: &assetCollections)
         // Favorites
         getSmartAlbum(subType: .smartAlbumFavorites, result: &assetCollections)
+
         // CloudShared
-        getSmartAlbum(subType: .albumCloudShared, result: &assetCollections)
+        // getSmartAlbum(subType: .albumCloudShared, result: &assetCollections)
 
         // Other smart albums
         getSmartAlbum(subType: .smartAlbumGeneric, result: &assetCollections)
