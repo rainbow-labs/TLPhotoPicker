@@ -152,6 +152,7 @@ open class TLPhotosPickerViewController: UIViewController {
     public weak var delegate: TLPhotosPickerViewControllerDelegate?
     public weak var logDelegate: TLPhotosPickerLogDelegate?
     open var selectedAssets = [TLPHAsset]()
+    open var selectedAssetIds = Set<String>()
     public var configure = TLPhotosPickerConfigure()
     public var customDataSouces: TLPhotopickerDataSourcesProtocol?
 
@@ -347,6 +348,7 @@ open class TLPhotosPickerViewController: UIViewController {
             let selectedPHAsset = self.selectedAssets.first?.phAsset
         {
             self.selectedAssets.removeAll()
+            self.selectedAssetIds.removeAll()
             findIndexAndReloadCells(phAsset: selectedPHAsset)
         }
     }
@@ -552,12 +554,13 @@ extension TLPhotosPickerViewController {
       var selectedItems: [(IndexPath, Int)] = []
       result.enumerateObjects { (asset: PHAsset, index: Int, stop: UnsafeMutablePointer<ObjCBool>) in
         if !self.maxCheck() {
-          if self.canSelect(phAsset: asset) {
+          if self.canSelect(phAsset: asset) && !self.selectedAssetIds.contains(asset.localIdentifier) {
             let asset = result.object(at: index)
             var tlAsset = TLPHAsset(asset: asset)
 
             tlAsset.selectedOrder = self.selectedAssets.count + 1
             self.selectedAssets.append(tlAsset)
+            self.selectedAssetIds.insert(asset.localIdentifier)
 
             self.logDelegate?.selectedPhoto(picker: self, at: index)
 
@@ -589,6 +592,7 @@ extension TLPhotosPickerViewController {
     }
 
     self.selectedAssets.removeAll()
+    self.selectedAssetIds.removeAll()
 
     /// Update the UI with selected items.
     unselectedItems.forEach { (item: IndexPath) in
@@ -1327,6 +1331,7 @@ extension TLPhotosPickerViewController {
         // deselect
             logDelegate?.deselectedPhoto(picker: self, at: indexPath.row)
             selectedAssets.remove(at: index)
+          self.selectedAssetIds.remove(phAsset.localIdentifier)
             #if swift(>=4.1)
             selectedAssets = selectedAssets.enumerated().compactMap({ (offset, asset) -> TLPHAsset? in
                 var asset = asset
@@ -1349,10 +1354,14 @@ extension TLPhotosPickerViewController {
         } else {
         // select
             logDelegate?.selectedPhoto(picker: self, at: indexPath.row)
-            guard !maxCheck(), canSelect(phAsset: phAsset) else { return }
+          guard !maxCheck(),
+                  canSelect(phAsset: phAsset),
+                  !self.selectedAssetIds.contains(phAsset.localIdentifier) else { return }
 
             asset.selectedOrder = selectedAssets.count + 1
             selectedAssets.append(asset)
+            self.selectedAssetIds.insert(phAsset.localIdentifier)
+
             cell.selectedAsset = true
             cell.orderLabel?.text = "\(asset.selectedOrder)"
 
